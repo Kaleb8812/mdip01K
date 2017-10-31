@@ -12,11 +12,22 @@ public class App {
     }
 
     Boolean ReadBookAndStopWords() throws IOException {
-        Boolean listEmpty = true;
+        Boolean listEmpty = false;
 
-        List singleLine = FileUtils.readLines(new File("c:/Workspaces/IDEA/mdip01K/sample.txt"));
-        if (singleLine.isEmpty()) {
-            listEmpty = false;
+        List allLines = FileUtils.readLines(new File("c:/Workspaces/IDEA/mdip01K/sample.txt"));
+        if (allLines.isEmpty()) {
+            listEmpty = true;
+        } else {
+            String singleLine = "";
+            for (Object allLine : allLines) {
+                singleLine = allLine.toString();
+                String[] wordsSplitBySpace = singleLine.split("\\s+");
+                for (String aWordsSplitBySpace : wordsSplitBySpace) {
+                    //Filter against stop word list; Start word frequency counter
+                    System.out.println(aWordsSplitBySpace);
+                }
+            }
+
         }
 
         return listEmpty;

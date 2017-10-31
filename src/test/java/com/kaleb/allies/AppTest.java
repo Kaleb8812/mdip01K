@@ -21,7 +21,7 @@ public class AppTest extends TestCase {
         App appClass = new App();
         Boolean listNotEmpty = appClass.ReadBookAndStopWords();
 
-        assertTrue(listNotEmpty);
+        assertTrue(!listNotEmpty);
     }
 
 }
