@@ -14,7 +14,7 @@ public class App {
     Boolean ReadBookAndStopWords() throws IOException {
         Boolean listEmpty = false;
 
-        List allLines = FileUtils.readLines(new File("c:/Workspaces/IDEA/mdip01K/sample.txt"));
+        List allLines = FileUtils.readLines(new File("C:/Workspaces/IDEA/mdip01K/src/main/resources/sample.txt"));
         if (allLines.isEmpty()) {
             listEmpty = true;
         } else {
