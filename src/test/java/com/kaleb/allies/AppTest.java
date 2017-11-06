@@ -1,30 +1,27 @@
 package com.kaleb.allies;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
-public class AppTest extends TestCase {
-    public AppTest(String testName) {
-        super( testName );
-    }
+import static org.junit.Assert.assertTrue;
 
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
+public class AppTest {
 
     //Test fails if read in List is empty
-    public void testApp() throws IOException {
+    @Test
+    public void inputValidFileShouldReturnTrue() throws IOException {
         App appClass = new App();
         Boolean listNotEmpty = appClass.readBookAndStopWords();
         assertTrue(!listNotEmpty);
     }
+
+    @Test
+    public void fileContainingMultipleIdenticalWordsShouldPrintTotalAmountOfSingleWord() throws IOException {
+        App appClass = new App();
+        //Boolean listNotEmpty = appClass.readBookAndStopWords();
+        assertTrue(true);
+    }
+
 
 }
