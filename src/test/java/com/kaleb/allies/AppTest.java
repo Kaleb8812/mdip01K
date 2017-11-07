@@ -3,24 +3,26 @@ package com.kaleb.allies;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class AppTest {
 
     //Test fails if read in List is empty
     @Test
-    public void inputValidFileShouldReturnTrue() throws IOException {
+    public void inputValidFileShouldNullWhenGivenBlankFile() throws IOException {
         App appClass = new App();
-        Boolean listNotEmpty = appClass.readBookAndStopWords();
-        assertTrue(!listNotEmpty);
+        assertEquals(null, appClass.readBook());
     }
 
     @Test
     public void fileContainingMultipleIdenticalWordsShouldPrintTotalAmountOfSingleWord() throws IOException {
+        HashMap<String, Integer> testAllLinesMap = new HashMap<>();
         App appClass = new App();
-        //Boolean listNotEmpty = appClass.readBookAndStopWords();
-        assertTrue(true);
+
+        assertEquals("belted        count: 1", appClass.wordCountingLogic(testAllLinesMap, "belted"));
     }
 
 

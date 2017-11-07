@@ -8,44 +8,55 @@ import java.util.HashMap;
 import java.util.List;
 
 public class App {
-    //public static void main(String[] args) throws IOException {
-    //}
 
-    Boolean readBookAndStopWords() throws IOException {
-        Boolean listEmpty = false;
+    protected void readBookAndStopWords() throws IOException {
 
-        List allLines = FileUtils.readLines(new File("C:/Workspaces/IDEA/mdip01K/src/main/resources/sample.txt"));
-
-
-        if (allLines.isEmpty()) {
-            listEmpty = true;
-        } else {
-            wordCounter(allLines);
-        }
-
-        return listEmpty;
-    }
-
-    private void wordCounter(List allLines) throws IOException {
-        List stopWordList = FileUtils.readLines(new File("C:/Workspaces/IDEA/mdip01K/src/main/resources/stop-words.txt"));
+        List bookWordList = readBook();
+        List stopWordList = readStopWords();
         HashMap<String, Integer> allLinesMap = new HashMap<>();
         String singleLine = "";
-        for (Object allLine : allLines) {
+        for (Object allLine : bookWordList) {
             singleLine = allLine.toString();
             String[] wordsSplitBySpace = singleLine.split("\\s+");
-            for (String aWordsSplitBySpace : wordsSplitBySpace) {
-                aWordsSplitBySpace = aWordsSplitBySpace.replaceAll("\\.", "");
-                if (!stopWordList.contains(/*StringUtils.toLowerCase*/(aWordsSplitBySpace))) {
-
-                    //Filter against stop word list; Start word frequency counter
-                    if (!allLinesMap.containsKey(aWordsSplitBySpace)) {
-                        allLinesMap.put(aWordsSplitBySpace, 1);
-                    } else {
-                        allLinesMap.put(aWordsSplitBySpace, allLinesMap.get(aWordsSplitBySpace) + 1);
-                    }
-                    System.out.println(aWordsSplitBySpace + "       count: " + allLinesMap.get(aWordsSplitBySpace));
-                }
+            for (String wordFromLineSplitBySpace : wordsSplitBySpace) {
+                wordFromLineSplitBySpace = wordFromLineSplitBySpace.replaceAll("\\.", "");
+                //Filter against stop word list; Start word frequency counter
+                wordCountingLogic(allLinesMap, wordFromLineSplitBySpace);
             }
         }
+
     }
+
+    protected List readBook() throws IOException {
+        List allBookLines = FileUtils.readLines(new File("C:/Workspaces/IDEA/mdip01K/src/main/resources/sample.txt"));
+        if (!allBookLines.isEmpty()) {
+            return allBookLines;
+        } else {
+            return null;
+        }
+    }
+
+    protected List readStopWords() throws IOException {
+        List allStopWordLines = FileUtils.readLines(new File("C:/Workspaces/IDEA/mdip01K/src/main/resources/stop-words.txt"));
+        if (!allStopWordLines.isEmpty()) {
+            return allStopWordLines;
+        } else {
+            return null;
+        }
+    }
+
+
+    protected String wordCountingLogic(HashMap<String, Integer> readWordsMap, String wordFromLineSplitBySpace) {
+
+        if (!readWordsMap.containsKey(wordFromLineSplitBySpace)) {
+            readWordsMap.put(wordFromLineSplitBySpace, 1);
+        } else {
+            readWordsMap.put(wordFromLineSplitBySpace, readWordsMap.get(wordFromLineSplitBySpace) + 1);
+        }
+
+        return wordFromLineSplitBySpace + "        count: " + readWordsMap.get(wordFromLineSplitBySpace);
+
+    }
+
+
 }
