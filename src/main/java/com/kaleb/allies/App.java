@@ -22,9 +22,11 @@ public class App {
     }
 
     protected void wordFrequencyExportRules() {
+        ArrayList topOneHundred = new ArrayList(); //Sort values numerically after populating hashmap
+
         for (String name: allLinesMap.keySet()) {
             int value = allLinesMap.get(name);
-//          Eventually replaced with writing to file
+//          Eventually replaced with writing to file or other export style
             System.out.println(name + "      count: " + value);
         }
     }
@@ -78,6 +80,7 @@ public class App {
     }
 
     protected void wordCountingRules(String wordFromLineSplitBySpace) {
+        // Sort values numerically as they pass/fall behind each other
         if (!allLinesMap.containsKey(wordFromLineSplitBySpace)) {
             allLinesMap.put(wordFromLineSplitBySpace, 1);
         } else {
