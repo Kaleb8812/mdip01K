@@ -44,15 +44,59 @@ public class AppTest {
     }
 
     @Test
-    public void stringWithPeriodShouldReturnWithoutPeriod() throws IOException {
+    public void stringWithAllNumbersShouldReturnEmptyString() throws IOException {
         App appClass = new App();
-        assertEquals("Est", appClass.stringFormattingRules("Est."));
+        assertEquals("", appClass.characterDeleteRules("10000"));
     }
 
-/*    @Test
-    public void stringWithDashShouldReturnWithoutWithHyphens() throws IOException {
+    @Test
+    public void stringWithNumbersAndLettersShouldReturnStringWithOnlyLetterCharacters() throws IOException {
         App appClass = new App();
-        assertEquals("Est", appClass.stringFormattingRules("Est."));
-    }*/
+        assertEquals("Fig", appClass.characterDeleteRules("Fig1"));
+    }
+
+    @Test
+    public void stringWithCommaShouldReturnWithoutComma() throws IOException {
+        App appClass = new App();
+        assertEquals("said", appClass.characterDeleteRules("said,"));
+    }
+
+    @Test
+    public void stringWithColonShouldReturnWithoutColon() throws IOException {
+        App appClass = new App();
+        assertEquals("following", appClass.characterDeleteRules("following:"));
+    }
+
+    @Test
+    public void stringWithSemiColonShouldReturnWithoutSemiColon() throws IOException {
+        App appClass = new App();
+        assertEquals("final", appClass.characterDeleteRules("final;"));
+    }
+
+    @Test
+    public void stringWithPeriodShouldReturnWithoutPeriod() throws IOException {
+        App appClass = new App();
+        assertEquals("Est", appClass.characterDeleteRules("Est."));
+    }
+
+    @Test
+    public void stringWithQuestionMarkShouldReturnWithoutQuestionMark() throws IOException {
+        App appClass = new App();
+        assertEquals("going", appClass.characterDeleteRules("going?"));
+    }
+
+    @Test
+    public void stringWithDashShouldReturnStringWithSpace() throws IOException {
+        App appClass = new App();
+        String[] stringSpaceResult = appClass.stringSpaceRules("A book-line that contains a dash!");
+
+        assertEquals("A", stringSpaceResult[0]);
+        assertEquals("book", stringSpaceResult[1]);
+        assertEquals("line", stringSpaceResult[2]);
+        assertEquals("that", stringSpaceResult[3]);
+        assertEquals("contains", stringSpaceResult[4]);
+        assertEquals("a", stringSpaceResult[5]);
+        assertEquals("dash!", stringSpaceResult[6]);
+    }
 
 }

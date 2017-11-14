@@ -1,6 +1,5 @@
 package com.kaleb.allies;
 
-
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -17,65 +16,71 @@ public class App {
         List bookWordList = readInTextFile("sample");
         List stopWordListWithBlanks = readInTextFile("stop-words");
         ArrayList<String> stopWordListWithoutBlanks = stopWordListFormatting(stopWordListWithBlanks);
-        lineSplittingRules(bookWordList, stopWordListWithoutBlanks);
+
+        lineSplitRules(bookWordList, stopWordListWithoutBlanks);
+
         wordFrequencyExportRules();
     }
 
-    protected void wordFrequencyExportRules() {
-        ArrayList topOneHundred = new ArrayList(); //Sort values numerically after populating hashmap
-
-        for (String name: allLinesMap.keySet()) {
-            int value = allLinesMap.get(name);
-//          Eventually replaced with writing to file or other export style
-            System.out.println(name + "      count: " + value);
-        }
-    }
-
-    protected ArrayList<String> stopWordListFormatting(List stopWordListWithBlanks) {
-        ArrayList<String> stopWordListWithoutBlanks = new ArrayList<>();
-        String singleLine;
-        for(int i = 0; i<stopWordListWithBlanks.size(); i++) {
-            singleLine = stopWordListWithBlanks.get(i).toString();
-            if(!singleLine.isEmpty() && !singleLine.startsWith("#")){
-                stopWordListWithoutBlanks.add(stopWordListWithBlanks.get(i).toString());
-            }
-        }
-        return stopWordListWithoutBlanks;
-    }
-
-    protected void lineSplittingRules(List bookWordList, ArrayList stopWordListWithoutBlanks) {
-        String singleLine;
-
-        for (Object allLines : bookWordList) {
-            singleLine = allLines.toString();
-            String[] wordsSplitBySpace = singleLine.split("\\s+");
-            for (String wordFromLineSplitBySpace : wordsSplitBySpace) {
-                wordFromLineSplitBySpace = stringFormattingRules(wordFromLineSplitBySpace);
-                if(!stopWordListWithoutBlanks.contains(wordFromLineSplitBySpace)) {
-                    wordCountingRules(wordFromLineSplitBySpace);
-                }
-            }
-        }
-    }
-
-    protected String stringFormattingRules(String wordFromLineSplitBySpace) {
-//        Replace apostrophes, commas, other symbols, etc
-//        Change language, case of letters, etc
-//        wordFromLineSplitBySpace = wordFromLineSplitBySpace.replaceAll(",", "");
-//        wordFromLineSplitBySpace = wordFromLineSplitBySpace.replaceAll("'", "");
-        wordFromLineSplitBySpace = wordFromLineSplitBySpace.replaceAll("\\.", "");
-
-        return wordFromLineSplitBySpace;
-    }
-
     protected List readInTextFile(String fileName) throws IOException {
-
         List allLinesFromFile = FileUtils.readLines(new File("C:/Workspaces/IDEA/mdip01K/src/main/resources/" + fileName + ".txt"));
 
         if (!allLinesFromFile.isEmpty()) {
             return allLinesFromFile;
         } else {
             return null;
+        }
+    }
+
+    protected ArrayList<String> stopWordListFormatting(List stopWordListWithBlanks) {
+        ArrayList<String> stopWordListWithoutBlanks = new ArrayList<>();
+        String singleLine;
+
+        for (Object stopWordListWithBlank : stopWordListWithBlanks) {
+            singleLine = stopWordListWithBlank.toString();
+            if (!singleLine.isEmpty() && !singleLine.startsWith("#")) {
+                stopWordListWithoutBlanks.add(stopWordListWithBlank.toString());
+            }
+        }
+
+        return stopWordListWithoutBlanks;
+    }
+
+    protected void lineSplitRules(List bookWordList, ArrayList stopWordListWithoutBlanks) {
+        //String singleLine;
+
+        for (Object allLines : bookWordList) {
+            String[] wordsSplitBySpace = stringSpaceRules(allLines.toString());
+            for (String wordFromLineSplitBySpace : wordsSplitBySpace) {
+                wordFromLineSplitBySpace = characterDeleteRules(wordFromLineSplitBySpace);
+                if (!stopWordListWithoutBlanks.contains(wordFromLineSplitBySpace)) {
+                    wordCountingRules(wordFromLineSplitBySpace);
+                }
+            }
+        }
+    }
+
+    protected String[] stringSpaceRules(String singleLine) {
+        if (singleLine.contains("-")) {
+            singleLine = singleLine.replaceAll("-", " ");
+        }
+
+        return singleLine.split("\\s+");
+    }
+
+    protected String characterDeleteRules(String wordFromLineSplitBySpace) {
+        wordFromLineSplitBySpace = wordFromLineSplitBySpace.replaceAll("[0-9,;:.?]", "");
+
+        return wordFromLineSplitBySpace;
+    }
+
+    protected void wordFrequencyExportRules() {
+        ArrayList topOneHundred = new ArrayList(); //Sort values numerically after populating hashmap
+
+        for (String name : allLinesMap.keySet()) {
+            int value = allLinesMap.get(name);
+//          Eventually replaced with writing to file or other export style
+            System.out.println(name + "      count: " + value);
         }
     }
 
