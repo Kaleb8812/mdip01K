@@ -15,7 +15,7 @@ public class AppTest {
     @Test
     public void quickRunMethod() throws IOException {
         App appClass = new App();
-        appClass.readBookAndStopWords();
+        appClass.readBookAndStopWords(2);
     }
 
     @Test
@@ -37,10 +37,13 @@ public class AppTest {
 
     @Test
     public void fileContainingMultipleIdenticalWordsShouldPrintTotalAmountOfSingleWord() throws IOException {
-        HashMap<String, Integer> testAllLinesMap = new HashMap<>();
+        //HashMap<String, Integer> testAllLinesMap = new HashMap<>();
         App appClass = new App();
+        ArrayList testSortedWordList = appClass.readBookAndStopWords(2);
 
-//        assertEquals("belted        count: 1", appClass.wordCountingLogic(testAllLinesMap, "belted"));
+        assertEquals(2, testSortedWordList.size());
+        assertTrue(testSortedWordList.contains("Methinks"));
+        assertTrue(testSortedWordList.contains("dead"));
     }
 
     @Test

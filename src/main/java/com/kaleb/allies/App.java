@@ -12,14 +12,14 @@ public class App {
 
     protected HashMap<String, Integer> allLinesMap = new HashMap<>();
 
-    protected void readBookAndStopWords() throws IOException {
-        List bookWordList = readInTextFile("sample");
+    protected ArrayList readBookAndStopWords(int i) throws IOException {
+        List bookWordList = readInTextFile("frequency-test");
         List stopWordListWithBlanks = readInTextFile("stop-words");
         ArrayList<String> stopWordListWithoutBlanks = stopWordListFormatting(stopWordListWithBlanks);
 
         lineSplitRules(bookWordList, stopWordListWithoutBlanks);
 
-        wordFrequencyExportRules();
+        return wordFrequencyExportRules();
     }
 
     protected List readInTextFile(String fileName) throws IOException {
@@ -52,7 +52,7 @@ public class App {
         for (Object allLines : bookWordList) {
             String[] wordsSplitBySpace = stringSpaceRules(allLines.toString());
             for (String wordFromLineSplitBySpace : wordsSplitBySpace) {
-                wordFromLineSplitBySpace = characterDeleteRules(wordFromLineSplitBySpace);
+                    wordFromLineSplitBySpace = characterDeleteRules(wordFromLineSplitBySpace);
                 if (!stopWordListWithoutBlanks.contains(wordFromLineSplitBySpace)) {
                     wordCountingRules(wordFromLineSplitBySpace);
                 }
@@ -74,14 +74,20 @@ public class App {
         return wordFromLineSplitBySpace;
     }
 
-    protected void wordFrequencyExportRules() {
+    protected ArrayList wordFrequencyExportRules() {
         ArrayList topOneHundred = new ArrayList(); //Sort values numerically after populating hashmap
 
         for (String name : allLinesMap.keySet()) {
             int value = allLinesMap.get(name);
+            if (value >= 4) {
+                topOneHundred.add(name);
+            }
+
 //          Eventually replaced with writing to file or other export style
             System.out.println(name + "      count: " + value);
         }
+
+        return topOneHundred;
     }
 
     protected void wordCountingRules(String wordFromLineSplitBySpace) {
