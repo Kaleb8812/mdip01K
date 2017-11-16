@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -13,14 +12,20 @@ import static org.junit.Assert.assertEquals;
 public class AppTest {
 
     @Test
-    public void quickRunMethod() throws IOException {
+    public void basicRunAppMethod() throws IOException {
         App appClass = new App();
-        appClass.readBookAndStopWords(2);
+        System.out.println("Top 100 Most Frequent Word List:");
+        System.out.println("WORD|COUNT");
+        ArrayList resultWordList = appClass.readBookAndStopWords("mobydick", 100, "|");
+        for (Object aResultWordList : resultWordList) {
+            System.out.println(aResultWordList);
+        }
     }
 
     @Test
     public void emptyFileShouldReturnNull() throws IOException {
         App appClass = new App();
+
         assertEquals(null, appClass.readInTextFile("blank-file"));
     }
 
@@ -30,61 +35,57 @@ public class AppTest {
         myList.add("Test line 1");
         myList.add("Test line 2");
         myList.add("Test line 3");
+
         App appClass = new App();
         List testPopList = appClass.readInTextFile("populated-test");
+
         assertEquals(myList, testPopList);
     }
 
     @Test
     public void fileContainingMultipleIdenticalWordsShouldPrintTotalAmountOfSingleWord() throws IOException {
-        //HashMap<String, Integer> testAllLinesMap = new HashMap<>();
         App appClass = new App();
-        ArrayList testSortedWordList = appClass.readBookAndStopWords(2);
+        ArrayList testSortedWordList = appClass.readBookAndStopWords("frequency-test", 2, "|");
 
         assertEquals(2, testSortedWordList.size());
-        assertTrue(testSortedWordList.contains("Methinks"));
-        assertTrue(testSortedWordList.contains("dead"));
+        assertTrue(testSortedWordList.contains("methinks|4"));
+        assertTrue(testSortedWordList.contains("dead|4"));
     }
 
     @Test
-    public void stringWithAllNumbersShouldReturnEmptyString() throws IOException {
+    public void stopWordFormattingShouldReturnAsListOfLowercaseStrings() throws IOException {
+        List myList = new ArrayList();
+        myList.add("#The");
+        myList.add("");
+        myList.add("#");
+        myList.add("The");
+        myList.add("the");
+        myList.add("Im");
+        myList.add("");
+        myList.add("THE");
+        myList.add("end");
+        myList.add("");
+
         App appClass = new App();
+        List testStopWordFormattedList = appClass.stopWordListFormatting(myList);
+
+        assertEquals("the", testStopWordFormattedList.get(0));
+        assertEquals("the", testStopWordFormattedList.get(1));
+        assertEquals("im", testStopWordFormattedList.get(2));
+        assertEquals("the", testStopWordFormattedList.get(3));
+        assertEquals("end", testStopWordFormattedList.get(4));
+    }
+
+    @Test
+    public void stringsWithNonAlphaCharactersShouldReturnStringsWithRemovedNonAlphaCharacters() throws IOException {
+        App appClass = new App();
+
         assertEquals("", appClass.characterDeleteRules("10000"));
-    }
-
-    @Test
-    public void stringWithNumbersAndLettersShouldReturnStringWithOnlyLetterCharacters() throws IOException {
-        App appClass = new App();
         assertEquals("Fig", appClass.characterDeleteRules("Fig1"));
-    }
-
-    @Test
-    public void stringWithCommaShouldReturnWithoutComma() throws IOException {
-        App appClass = new App();
         assertEquals("said", appClass.characterDeleteRules("said,"));
-    }
-
-    @Test
-    public void stringWithColonShouldReturnWithoutColon() throws IOException {
-        App appClass = new App();
         assertEquals("following", appClass.characterDeleteRules("following:"));
-    }
-
-    @Test
-    public void stringWithSemiColonShouldReturnWithoutSemiColon() throws IOException {
-        App appClass = new App();
         assertEquals("final", appClass.characterDeleteRules("final;"));
-    }
-
-    @Test
-    public void stringWithPeriodShouldReturnWithoutPeriod() throws IOException {
-        App appClass = new App();
         assertEquals("Est", appClass.characterDeleteRules("Est."));
-    }
-
-    @Test
-    public void stringWithQuestionMarkShouldReturnWithoutQuestionMark() throws IOException {
-        App appClass = new App();
         assertEquals("going", appClass.characterDeleteRules("going?"));
     }
 
@@ -102,4 +103,18 @@ public class AppTest {
         assertEquals("dash!", stringSpaceResult[6]);
     }
 
+    @Test
+    public void stringWithLongDashShouldReturnStringWithSpace() throws IOException {
+        App appClass = new App();
+        String[] stringSpaceResult = appClass.stringSpaceRules("A book—line that contains a long dash.");
+
+        assertEquals("A", stringSpaceResult[0]);
+        assertEquals("book", stringSpaceResult[1]);
+        assertEquals("line", stringSpaceResult[2]);
+        assertEquals("that", stringSpaceResult[3]);
+        assertEquals("contains", stringSpaceResult[4]);
+        assertEquals("a", stringSpaceResult[5]);
+        assertEquals("long", stringSpaceResult[6]);
+        assertEquals("dash.", stringSpaceResult[7]);
+    }
 }

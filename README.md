@@ -1,2 +1,2 @@
 # Moby Dick Interview Project
-Readme content placeholder
+Run the app through the basicRunAppMethod() in the AppTest.java file
